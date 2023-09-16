@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Collection View Grouping"
+             x:Class="CollectionViewGroupingSample.View.CollectionViewGrouping">
+
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical">
+            <CollectionView x:Name="collectionView"
+                            ItemsSource="{Binding Groups}"
+                            RemainingItemsThreshold="{Binding RemainingItemsThreshold}"
+                            RemainingItemsThresholdReachedCommand="{Binding RemainingItemsThresholdReachedCommand}"
+                            RemainingItemsThresholdReachedCommandParameter="{Binding .}"
+                            IsGrouped="True">
+                <CollectionView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Vertical" Padding="10,0,0,5" Spacing="0" BackgroundColor="LightGray">
+                            <Label TextColor="Black" FontSize="18" FontAttributes="Bold">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="Group Id : "/>
+                                        <Span Text="{Binding GroupId}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <Label TextColor="Black" FontSize="13" FontAttributes="Bold">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <Span Text="    Group Name : "/>
+                                        <Span Text="{Binding GroupName}"/>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.GroupHeaderTemplate>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Orientation="Vertical" Spacing="2" IsVisible="{ Binding IsVisible}">
+                            <StackLayout.Triggers>
+                                <DataTrigger TargetType="StackLayout" Binding="{Binding IsVisible}" Value="False">
+                                    <Setter Property="HeightRequest" Value="0" />
+                                </DataTrigger>
+                            </StackLayout.Triggers>
+                            <Frame CornerRadius="15"
+                                   Margin="15"
+                                   Padding="10"
+                                   BackgroundColor="LightGray">
+                                <StackLayout Orientation="Vertical">
+                                    <Label TextColor="Black" FontSize="16" FontAttributes="Bold" >
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Child Id : "/>
+                                                <Span Text="{Binding Id}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label TextColor="Black" FontSize="14">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="    Child Name : "/>
+                                                <Span Text="{Binding Name}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label TextColor="Black" FontSize="12">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="    Child Description : "/>
+                                                <Span Text="{Binding Description}"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Switch IsToggled="{Binding IsVisible}"  />
+                                </StackLayout>
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1"
+                                                          Command="{Binding  Source={x:Reference collectionView}, Path=BindingContext.ChangeStateChild}"
+                                                          CommandParameter="{Binding .}"/>
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
